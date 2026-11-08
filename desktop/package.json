@@ -2,7 +2,7 @@
   "name": "artemis-tak-overlay",
   "productName": "Artemis TAK",
   "version": "1.0.0",
-  "description": "Artemis TAK overlay for BRM5",
+  "description": "Artemis TAK",
   "main": "main.js",
   "license": "MIT",
   "author": "Artemis Defense Group",
