@@ -540,8 +540,7 @@ try { if (document.documentElement.className === 'web' && !navigator.standalone 
       linear-gradient(#e0202b, #e0202b) left 6px bottom 6px / 22px 2px no-repeat,
       linear-gradient(#e0202b, #e0202b) left 6px bottom 6px / 2px 22px no-repeat,
       linear-gradient(#e0202b, #e0202b) right 6px bottom 6px / 22px 2px no-repeat,
-      linear-gradient(#e0202b, #e0202b) right 6px bottom 6px / 2px 22px no-repeat,
-      repeating-linear-gradient(0deg, rgba(0,0,0,.14) 0 1px, transparent 1px 3px); }
+      linear-gradient(#e0202b, #e0202b) right 6px bottom 6px / 2px 22px no-repeat; }
   #bar { border-radius: 3px; background: rgba(7,8,9,.92); border: 1px solid #2a2d33; border-left: 3px solid #B5121B; font-family: "Share Tech Mono", ui-monospace, monospace; letter-spacing: .12em; text-transform: uppercase; }
   #toolbar, #palette, #drawbar { border-radius: 3px; background: rgba(7,8,9,.94); border: 1px solid #2a2d33; border-top: 2px solid #B5121B; box-shadow: 0 10px 30px rgba(0,0,0,.55); }
   #toolbar button, #drawbar button { border-radius: 3px; }
@@ -583,6 +582,21 @@ try { if (document.documentElement.className === 'web' && !navigator.standalone 
   #sympanel .sb-grid { gap: 8px 10px; }
   #sympanel select, #sympanel input[type=text], #sympanel input[type=search] { height: 30px; border: 1px solid #23262c; color: #e8eaed; }
   #sympanel select:focus, #sympanel input:focus { border-color: #B5121B; }
+
+  #updbar { position: absolute; top: 48px; left: 50%; transform: translateX(-50%); z-index: 8; display: flex; align-items: center; gap: 10px; padding: 6px 8px 6px 14px; background: rgba(7,8,9,.96); border: 1px solid #B5121B; border-radius: 3px; color: #e8eaed; font: 12px "Share Tech Mono", ui-monospace, monospace; letter-spacing: .08em; text-transform: uppercase; white-space: nowrap; }
+  #updbar button { height: 26px; padding: 0 12px; border: 0; border-radius: 2px; background: #B5121B; color: #fff; font: 700 13px Rajdhani, sans-serif; letter-spacing: .12em; text-transform: uppercase; cursor: pointer; }
+  #updbar button.x { background: transparent; color: #9aa1aa; padding: 0 6px; }
+
+  /* Symbol popup: compact, dropdowns in 2 rows */
+  #sympanel { width: 620px; }
+  #sympanel .sb-main { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 6px; }
+  #sympanel .sb-main .sb-f span { font-size: 10px; letter-spacing: .06em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  #sympanel .sb-main select { height: 26px; font-size: 11px; padding: 0 4px; }
+  #sympanel .sb-srow { display: flex; align-items: center; gap: 12px; }
+  #sympanel .sb-srow .sb-q { flex: 1; height: 28px; }
+  #sympanel .sb-srow .sb-chk { flex: none; gap: 10px; font-size: 12px; }
+  #sympanel .sb-list { height: 150px; }
+  @media (max-width: 640px) { #sympanel .sb-main { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 </style>
 </head>
 <body>
@@ -994,7 +1008,7 @@ function sbBuild() {
   E.prev = document.createElement('canvas'); E.prev.width = 84 * (window.devicePixelRatio || 1); E.prev.height = 56 * (window.devicePixelRatio || 1); E.prev.style.width = '84px'; E.prev.style.height = '56px';
   head.appendChild(E.prev); E.code = mkEl('div', 'sb-code'); head.appendChild(E.code);
   sp.appendChild(head);
-  const g = mkEl('div', 'sb-grid'); sp.appendChild(g);
+  const g = mkEl('div', 'sb-grid sb-main'); sp.appendChild(g);
   E.std = mkSelect([['2525', 'MIL-STD-2525D'], ['APP6', 'APP-6D']], SB.std, v => { SB.std = v; fillSelect(E.set, setOpts(), SB.set); SB.set = E.set.value; sbSet(); sbDirty(); });
   E.ctx = mkSelect(CTX, SB.ctx, on('ctx')); E.si = mkSelect(SI, SB.si, on('si'));
   E.set = mkSelect(setOpts(), SB.set, v => { SB.set = v; SB.icon = ''; SB.m1 = SB.m2 = SB.amp = '00'; sbSet(); sbDirty(); });
@@ -1005,16 +1019,17 @@ function sbBuild() {
   E.cm = mkSelect(COLOR_MODES, SB.o.colorMode, oo('colorMode'));
   E.stack = mkSelect([1, 2, 3, 4, 5, 6].map(n => [String(n), String(n)]), '1', oo('stack', Number));
   E.rr = mkSelect(RR, '', oo('reinforcedReduced'));
-  [['Standard', E.std], ['Context', E.ctx], ['Affiliation', E.si], ['Symbol set', E.set], ['Status', E.status], ['Headquarters / task force', E.hqtfd],
-   ['Echelon / mobility', E.amp], ['Modifier 1', E.m1], ['Modifier 2', E.m2], ['Reinforced / reduced', E.rr], ['Stack', E.stack], ['Colors', E.cm]]
-    .forEach(([l, e]) => g.appendChild(field(l, e)));
-  const chk = mkEl('div', 'sb-chk'); sp.appendChild(chk);
+  [['Affiliation', E.si], ['Symbol set', E.set], ['Echelon', E.amp], ['Status', E.status], ['HQ / TF', E.hqtfd], ['Colors', E.cm],
+   ['Standard', E.std], ['Context', E.ctx], ['Modifier 1', E.m1], ['Modifier 2', E.m2], ['Reinf / red', E.rr], ['Stack', E.stack]]
+    .forEach(([l, e]) => { const f = field(l, e); f.title = l; g.appendChild(f); });
+  const srow = mkEl('div', 'sb-srow'); sp.appendChild(srow);
+  const chk = mkEl('div', 'sb-chk');
   [['fill', 'Fill'], ['frame', 'Frame'], ['icon', 'Icon']].forEach(([k, l]) => {
     const lb = mkEl('label'), cb = document.createElement('input'); cb.type = 'checkbox'; cb.checked = true; cb.onchange = () => { SB.o[k] = cb.checked; sbDirty(); };
     E[k] = cb; lb.appendChild(cb); lb.appendChild(mkEl('span', '', l)); chk.appendChild(lb);
   });
   E.q = document.createElement('input'); E.q.type = 'search'; E.q.placeholder = 'Search symbols'; E.q.className = 'sb-q'; E.q.oninput = sbIcons;
-  sp.appendChild(E.q);
+  srow.append(E.q, chk);
   E.list = mkEl('div', 'sb-list'); sp.appendChild(E.list);
   const det = mkEl('details', 'sb-txt'); det.appendChild(mkEl('summary', '', 'Text'));
   const tg = mkEl('div', 'sb-grid'); det.appendChild(tg);
@@ -2248,6 +2263,28 @@ const BAD_SQ = /n+i+g{2,}(?:e+r+|a+h+|a+(?!r))|f+a+g{2,}o+t+/;
 function normBad(t) { return String(t).toLowerCase().normalize('NFKD').replace(/[̀-ͯ]/g, '').replace(/0/g, 'o').replace(/[1!|]/g, 'i').replace(/3/g, 'e').replace(/[4@]/g, 'a').replace(/[5$]/g, 's').replace(/7/g, 't').replace(/8/g, 'b'); }
 function isBad(t) { if (typeof t !== 'string' || !t) return false; const n = normBad(t); return BAD_TOK.test(n.replace(/[^a-z]+/g, ' ')) || BAD_SQ.test(n.replace(/[^a-z]/g, '')); }
 let toastT = null;
+
+// ===== Overlay update notice =====
+// Bump OVERLAY_LATEST whenever you publish a new artemis-tak.exe (match desktop/package.json "version")
+const OVERLAY_LATEST = '1.1.0';
+const OVERLAY_URL = 'https://github.com/Vynox775/artemis-tak-download/releases/latest/download/artemis-tak.exe';
+(function () {
+  if (!IS_ELECTRON) return;
+  const have = (window.rotak && window.rotak.version) || '1.0.0';
+  const n = v => v.split('.').map(x => parseInt(x, 10) || 0);
+  const a = n(have), b = n(OVERLAY_LATEST);
+  const older = a[0] < b[0] || (a[0] === b[0] && (a[1] < b[1] || (a[1] === b[1] && a[2] < b[2])));
+  if (!older) return;
+  const bar = document.createElement('div');
+  bar.id = 'updbar';
+  bar.innerHTML = '<span>New overlay version available</span>';
+  const go = document.createElement('button'); go.textContent = 'Download update';
+  go.onclick = () => window.rotak.openExternal(OVERLAY_URL);
+  const x = document.createElement('button'); x.textContent = '\u2715'; x.className = 'x'; x.onclick = () => bar.remove();
+  bar.append(go, x);
+  (document.getElementById('screen') || document.body).appendChild(bar);
+})();
+
 function toast(msg) {
   let e = document.getElementById('toast');
   if (!e) { e = document.createElement('div'); e.id = 'toast'; document.body.appendChild(e); }
