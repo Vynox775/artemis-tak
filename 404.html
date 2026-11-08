@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Error 404 · RO-TAK</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b0d10">
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext x='50' y='.9em' font-size='90' text-anchor='middle'%3E%F0%9F%8D%8C%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body { position: relative; overflow: hidden; background: #0b0d10; color: #fff; font-family: "IBM Plex Sans", -apple-system, "Segoe UI", Roboto, sans-serif; }
+  .bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 30% 55%; filter: brightness(.9) saturate(1.05); }
+  .veil { position: absolute; inset: 0; background: linear-gradient(270deg, rgba(11,13,16,.78) 0%, rgba(11,13,16,.45) 40%, rgba(11,13,16,.08) 100%); }
+  .hero { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: flex-end; justify-content: center; text-align: right; padding: 24px clamp(24px, 8vw, 128px); }
+  h1 { margin: 0 0 20px; font-weight: 600; font-size: clamp(44px, 9vw, 112px); line-height: .98; letter-spacing: -.035em; text-shadow: 0 2px 24px rgba(0,0,0,.6); }
+  p { max-width: 36ch; margin: 0 0 40px; font-size: clamp(18px, 2vw, 22px); line-height: 1.4; color: rgba(255,255,255,.86); text-shadow: 0 1px 12px rgba(0,0,0,.6); }
+  .row { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 14px; }
+  a { display: inline-flex; align-items: center; gap: 10px; padding: 14px 26px; border: 1px solid rgba(255,255,255,.4); border-radius: 6px; background: rgba(255,255,255,.06); color: #fff; font: 500 13px "IBM Plex Sans", sans-serif; letter-spacing: .12em; text-transform: uppercase; text-decoration: none; transition: background .15s, color .15s, border-color .15s; }
+  a:hover, a:focus-visible { background: #fff; color: #0b0d10; border-color: #fff; outline: none; }
+  a svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  @media (max-width: 700px) {
+    .bg { height: 58%; object-position: 30% 50%; }
+    .veil { background: linear-gradient(0deg, #0b0d10 0%, #0b0d10 42%, rgba(11,13,16,.45) 52%, rgba(11,13,16,.08) 100%); }
+    .hero { justify-content: flex-end; align-items: flex-start; text-align: left; padding-bottom: max(40px, env(safe-area-inset-bottom)); }
+    .row { justify-content: flex-start; }
+  }
+</style>
+</head>
+<body>
+<img class="bg" src="/images/404.webp" alt="">
+<div class="veil"></div>
+<main class="hero">
+  <h1>Error 404</h1>
+  <p>Nothing at this grid reference. Check your coordinates and reorient.</p>
+  <div class="row">
+    <a href="/">Back to base</a>
+    <a href="/play">Open RO-TAK <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+  </div>
+</main>
+</body>
+</html>
