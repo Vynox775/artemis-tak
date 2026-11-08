@@ -44,7 +44,12 @@ function create() {
   win.setAlwaysOnTop(true, 'screen-saver');
   win.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
   win.loadURL(SITE);
-  win.webContents.on('did-finish-load', () => { applySize(); win.webContents.send('locked', locked); });
+  win.webContents.on('did-finish-load', () => {
+    applySize();
+    win.webContents.send('locked', locked);
+    // Let Windows move the window natively when you drag the case (the map area stays clickable)
+    win.webContents.insertCSS('#case { -webkit-app-region: drag; } #screen, #screen * { -webkit-app-region: no-drag; }');
+  });
   // Links open in the normal browser, not inside the overlay
   win.webContents.setWindowOpenHandler(({ url }) => { shell.openExternal(url); return { action: 'deny' }; });
 }
