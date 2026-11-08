@@ -19,11 +19,10 @@ if (!app.requestSingleInstanceLock()) app.quit();
 
 function applySize() {
   const z = zoom;
-  const [x, y] = win.getPosition();
+  const { x, y } = win.getBounds();
   win.setResizable(true);
-  win.setSize(Math.round(BASE_W * z), Math.round(BASE_H * z));
+  win.setBounds({ x, y, width: Math.round(BASE_W * z), height: Math.round(BASE_H * z) });
   win.setResizable(false);
-  win.setPosition(x, y);
   win.webContents.setZoomFactor(z);
 }
 
@@ -52,11 +51,14 @@ function create() {
 
 ipcMain.on('drag-start', () => {
   const start = screen.getCursorScreenPoint();
-  const [wx, wy] = win.getPosition();
+  const b = win.getBounds();
+  const w = Math.round(BASE_W * zoom), h = Math.round(BASE_H * zoom); // fixed size so Windows scaling can't grow it
   clearInterval(dragTimer);
   dragTimer = setInterval(() => {
     const p = screen.getCursorScreenPoint();
-    win.setPosition(wx + p.x - start.x, wy + p.y - start.y);
+    const x = b.x + p.x - start.x, y = b.y + p.y - start.y;
+    const cur = win.getBounds();
+    if (cur.x !== x || cur.y !== y || cur.width !== w || cur.height !== h) win.setBounds({ x, y, width: w, height: h });
   }, 10);
 });
 ipcMain.on('drag-end', () => { clearInterval(dragTimer); dragTimer = null; });
