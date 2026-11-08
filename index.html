@@ -3192,7 +3192,9 @@ addEventListener('blur', stopDrag);
 
 if (IS_ELECTRON) $('frame').src = charcoal ? 'images/frame-charcoal.png' : 'images/frame.png';
 new ResizeObserver(() => document.documentElement.style.setProperty('--tb', $('toolbar').offsetHeight + 'px')).observe($('toolbar'));
-if (!IS_ELECTRON && 'serviceWorker' in navigator && /^https?:/.test(location.protocol)) navigator.serviceWorker.register('sw.js').catch(() => {});
+// Old offline cache kept serving outdated pages, so clear it out
+if ('serviceWorker' in navigator) navigator.serviceWorker.getRegistrations().then(rs => rs.forEach(r => r.unregister())).catch(() => {});
+if (window.caches) caches.keys().then(ks => ks.forEach(k => caches.delete(k))).catch(() => {});
 paintColor(); paintSize(); setTool('pen');
 load();
 resize();
