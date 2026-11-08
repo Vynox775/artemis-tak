@@ -5,6 +5,7 @@
   "description": "Artemis TAK overlay for BRM5",
   "main": "main.js",
   "license": "MIT",
+  "author": "Artemis Defense Group",
   "scripts": {
     "start": "electron .",
     "dist": "electron-builder --win nsis"
@@ -23,7 +24,6 @@
     ],
     "win": {
       "target": "nsis",
-      "signAndEditExecutable": false,
       "icon": "icon.ico"
     },
     "nsis": {
