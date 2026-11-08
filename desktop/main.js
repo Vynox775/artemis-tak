@@ -5,6 +5,7 @@
 //   Ctrl+Shift+F5 = reload (gets the newest site)
 //   Ctrl+Shift+Q = close
 const { app, BrowserWindow, globalShortcut, ipcMain, screen, shell } = require('electron');
+const { autoUpdater } = require('electron-updater');
 const path = require('path');
 
 const SITE = 'https://artemis-tak.vercel.app/play';
@@ -71,8 +72,27 @@ ipcMain.on('drag-start', () => {
 ipcMain.on('drag-end', () => { clearInterval(dragTimer); dragTimer = null; });
 ipcMain.on('open-external', (_e, url) => { if (/^https?:\/\//.test(url)) shell.openExternal(url); });
 
+// ===== Auto-update from GitHub releases (Vynox775/artemis-tak-download) =====
+function setupUpdates() {
+  if (!app.isPackaged) return;
+  autoUpdater.autoDownload = true;
+  autoUpdater.autoInstallOnAppQuit = true;   // installs silently next time the app closes
+  const tell = (state, info) => { if (win) win.webContents.send('update', { state, version: info && info.version }); };
+  autoUpdater.on('update-available', i => tell('available', i));
+  // As soon as an update finishes downloading, install it silently and reopen the app
+  autoUpdater.on('update-downloaded', i => {
+    tell('ready', i);
+    setTimeout(() => autoUpdater.quitAndInstall(true, true), 5000);
+  });
+  autoUpdater.on('error', () => {});
+  const check = () => autoUpdater.checkForUpdates().catch(() => {});
+  check(); setInterval(check, 30 * 60 * 1000); // and every 30 minutes
+}
+ipcMain.on('install-update', () => { autoUpdater.quitAndInstall(true, true); });
+
 app.whenReady().then(() => {
   create();
+  setupUpdates();
   globalShortcut.register('F8', () => setLocked(!locked));
   globalShortcut.register('F9', () => { win.isVisible() ? win.hide() : win.showInactive(); });
   globalShortcut.register('CommandOrControl+Shift+Q', () => app.quit());
