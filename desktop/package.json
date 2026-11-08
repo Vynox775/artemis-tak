@@ -16,19 +16,8 @@
   "build": {
     "appId": "com.artemis.tak",
     "productName": "Artemis TAK",
-    "files": [
-      "main.js",
-      "preload.js"
-    ],
-    "win": {
-      "target": "nsis"
-    },
-    "nsis": {
-      "oneClick": true,
-      "artifactName": "Artemis-TAK-Setup.exe"
-    }
-  },
-  "allowScripts": {
-    "electron@33.2.1": true
+    "files": ["main.js", "preload.js"],
+    "win": { "target": "nsis" },
+    "nsis": { "oneClick": true, "artifactName": "Artemis-TAK-Setup.exe" }
   }
 }
