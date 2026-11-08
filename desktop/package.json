@@ -1,0 +1,23 @@
+{
+  "name": "artemis-tak-overlay",
+  "productName": "Artemis TAK",
+  "version": "1.0.0",
+  "description": "Artemis TAK overlay for BRM5",
+  "main": "main.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --win nsis"
+  },
+  "devDependencies": {
+    "electron": "33.2.1",
+    "electron-builder": "25.1.8"
+  },
+  "build": {
+    "appId": "com.artemis.tak",
+    "productName": "Artemis TAK",
+    "files": ["main.js", "preload.js"],
+    "win": { "target": "nsis" },
+    "nsis": { "oneClick": true, "artifactName": "Artemis-TAK-Setup.exe" }
+  }
+}
