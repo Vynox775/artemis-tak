@@ -16,8 +16,24 @@
   "build": {
     "appId": "com.artemis.tak",
     "productName": "Artemis TAK",
-    "files": ["main.js", "preload.js"],
-    "win": { "target": "nsis" },
-    "nsis": { "oneClick": true, "artifactName": "Artemis-TAK-Setup.exe" }
+    "files": [
+      "main.js",
+      "preload.js",
+      "icon.ico"
+    ],
+    "win": {
+      "target": "nsis",
+      "signAndEditExecutable": false,
+      "icon": "icon.ico"
+    },
+    "nsis": {
+      "oneClick": true,
+      "artifactName": "Artemis-TAK-Setup.exe",
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Artemis TAK",
+      "installerIcon": "icon.ico",
+      "uninstallerIcon": "icon.ico"
+    }
   }
 }

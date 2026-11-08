@@ -39,6 +39,7 @@ function create() {
     hasShadow: false, backgroundColor: '#00000000',
     alwaysOnTop: true, fullscreenable: false,
     title: 'Artemis TAK',
+    icon: path.join(__dirname, 'icon.ico'),
     webPreferences: { preload: path.join(__dirname, 'preload.js'), contextIsolation: true, nodeIntegration: false },
   });
   win.setAlwaysOnTop(true, 'screen-saver');
