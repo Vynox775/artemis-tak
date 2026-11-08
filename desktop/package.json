@@ -28,7 +28,7 @@
     },
     "nsis": {
       "oneClick": true,
-      "artifactName": "Artemis-TAK-Setup.exe",
+      "artifactName": "artemis-tak.exe",
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
       "shortcutName": "Artemis TAK",
