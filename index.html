@@ -123,11 +123,12 @@ try { if (document.documentElement.className === 'web' && !navigator.standalone 
 
   html.web, html.web body { width: 100%; height: 100%; background: #0b0d10; overscroll-behavior: none; }
   html.web body { position: fixed; inset: 0; touch-action: none; -webkit-tap-highlight-color: transparent; -webkit-touch-callout: none; }
-  html.web #frame { display: none; }
-  html.web #screen { left: 0; top: 0; width: 100%; height: 100%; clip-path: none; }
-  html.web #bar { top: calc(10px + env(safe-area-inset-top)); left: calc(14px + env(safe-area-inset-left)); right: calc(14px + env(safe-area-inset-right)); }
-  html.web .pill { top: calc(52px + env(safe-area-inset-top)); }
-  html.web #clock { left: calc(14px + env(safe-area-inset-left)); }
+  html.web:not(.dev) #frame { display: none; }
+  html.web.dev #case { inset: auto; left: 50%; top: 50%; transform: translate(-50%, -50%); width: min(calc(100vw - 24px), calc((100dvh - 24px) * 1.4329)); height: auto; aspect-ratio: 1675 / 1169; }
+  html.web:not(.dev) #screen { left: 0; top: 0; width: 100%; height: 100%; clip-path: none; }
+  html.web:not(.dev) #bar { top: calc(10px + env(safe-area-inset-top)); left: calc(14px + env(safe-area-inset-left)); right: calc(14px + env(safe-area-inset-right)); }
+  html.web:not(.dev) .pill { top: calc(52px + env(safe-area-inset-top)); }
+  html.web:not(.dev) #clock { left: calc(14px + env(safe-area-inset-left)); }
   html.web #toolbar, html.web #palette, html.web #drawbar, html.web #menu { left: 0; right: 0; margin: 0 auto; transform: none; width: max-content; max-width: calc(100% - 16px); }
   html.web #toolbar { bottom: calc(10px + env(safe-area-inset-bottom)); flex-wrap: wrap; justify-content: center; }
   html.web #palette, html.web #drawbar { bottom: calc(var(--tb, 44px) + 18px + env(safe-area-inset-bottom)); flex-wrap: wrap; justify-content: center; }
@@ -537,7 +538,6 @@ try { if (document.documentElement.className === 'web' && !navigator.standalone 
   <div class="mapfx" aria-hidden="true"><div class="mf-box"><img class="mf-img" alt=""></div></div>
   <main class="hero">
     <div class="avatar-wrap">
-      <img class="avatar" src="images/avatar.webp" alt="">
       <div id="lchat" class="chat" hidden aria-live="polite">
         <button id="lchatX" class="chat-x" type="button" aria-label="Close"><svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
         <div class="chat-name">Artemis</div>
@@ -547,11 +547,10 @@ try { if (document.documentElement.className === 'web' && !navigator.standalone 
     <h1><span style="white-space:nowrap">Artemis TAK</span></h1>
     <div class="enter-row">
       <button id="lenter" class="enter" type="button">Enter <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
-      <a class="enter" id="lgh" href="https://github.com/rice-evans/RO-TAK" target="_blank" rel="noopener"><svg viewBox="0 0 16 16"><path fill="currentColor" stroke="none" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a>
-      <span class="updated">Updated on 8th November 2026</span>
+      <a class="enter" id="lgh" title="Based on RO-TAK" href="https://github.com/rice-evans/RO-TAK" target="_blank" rel="noopener"><svg viewBox="0 0 16 16"><path fill="currentColor" stroke="none" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a>
     </div>
   </main>
-  <nav class="legal"><button type="button" data-lg="privacy">Privacy policy</button><button type="button" data-lg="terms">Terms of service</button><button type="button" id="lintro">Introduction</button><a href="https://emergency-protocols.vercel.app/" target="_blank" rel="noopener">My Projects</a></nav>
+  <nav class="legal"><button type="button" data-lg="privacy">Privacy policy</button><button type="button" data-lg="terms">Terms of service</button><button type="button" id="lintro">Introduction</button></nav>
 <div id="intro" hidden>
   <div class="in-bg" aria-hidden="true"></div>
   <header class="in-top"><span class="in-brand">Artemis TAK</span><button type="button" id="inSkip">Plan with Artemis TAK</button></header>
@@ -574,20 +573,18 @@ try { if (document.documentElement.className === 'web' && !navigator.standalone 
 <section class="in-feat flip"><div class="in-txt"><h3>Lead, and everyone follows</h3><p>Lead the room and your view carries to anyone who taps Follow. Pan, zoom or rotate and they go with you.</p></div><div class="sc "><svg viewBox="400 220 800 560" preserveAspectRatio="xMidYMid slice" role="img" aria-hidden="true"><rect x="0" y="0" width="1600" height="1200" fill="#0b0d10"/><image href="images/landing/map1.webp" x="0" y="0" width="1600" height="1200"/><image data-a="fade" style="--d:0s" href="images/intro/sf_inf.svg" x="519.0" y="691.5" width="82.0" height="57.0"/><image data-a="fade" style="--d:0s" href="images/intro/se_inf.svg" x="890.5" y="340.5" width="79.0" height="79.0"/><image data-a="fade" style="--d:0s" href="images/intro/se_arm.svg" x="1000.5" y="400.5" width="79.0" height="79.0"/><g class="mv lead"><rect x="470" y="470" width="240" height="160" rx="6" fill="rgba(255,122,26,.12)" stroke="#ff7a1a" stroke-width="6"/><g><rect x="470" y="430" width="108" height="40" rx="8" fill="#ff7a1a"/><text x="524" y="459" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-weight="700" font-size="26" fill="#111">Alex</text></g></g><g class="mv trail"><rect x="470" y="470" width="240" height="160" rx="6" fill="rgba(181,18,27,.12)" stroke="#B5121B" stroke-width="6" stroke-dasharray="18 12"/><g><rect x="470" y="630" width="108" height="40" rx="8" fill="#B5121B"/><text x="524" y="659" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-weight="700" font-size="26" fill="#fff">Sam</text></g></g></svg><div class="ui-pill"><span>Following Alex</span><button type="button" tabindex="-1">Stop</button></div></div></section>
 <section class="in-feat"><div class="in-txt"><h3>Hide what you don’t need</h3><p>Switch symbols, drawings, text, numbers or waypoints off for your own view. Everyone else’s map stays as it is.</p></div><div class="sc "><svg viewBox="400 220 800 560" preserveAspectRatio="xMidYMid slice" role="img" aria-hidden="true"><rect x="0" y="0" width="1600" height="1200" fill="#0b0d10"/><image href="images/landing/map1.webp" x="0" y="0" width="1600" height="1200"/><image data-a="fade" style="--d:0s" href="images/intro/sf_inf.svg" x="519.0" y="691.5" width="82.0" height="57.0"/><image data-a="fade" style="--d:0s" href="images/intro/sf_arm.svg" x="629.0" y="661.5" width="82.0" height="57.0"/><image data-a="fade" style="--d:0s" href="images/intro/se_inf.svg" x="890.5" y="340.5" width="79.0" height="79.0"/><g data-a="hide1" style="--d:1.6s"><path d="M610,700 C700,640 690,540 800,500 S900,430 950,370" fill="none" stroke="#ff7a1a" stroke-width="10" stroke-linecap="round"/><rect x="840" y="280" width="290" height="230" fill="none" stroke="#ef4444" stroke-width="7"/></g><g data-a="hide2" style="--d:3s"><text x="548" y="745" font-family="IBM Plex Sans, sans-serif" font-weight="700" font-size="44" fill="#fff" stroke="#000" stroke-width="9" paint-order="stroke" stroke-linejoin="round">RP Zulu</text><text x="760" y="262" font-family="IBM Plex Sans, sans-serif" font-weight="700" font-size="44" fill="#fff" stroke="#000" stroke-width="9" paint-order="stroke" stroke-linejoin="round">OBJ</text></g></svg><div class="ui-layers"><div class="ui-row "><span>Symbols</span><i></i></div><div class="ui-row off1"><span>Drawings</span><i></i></div><div class="ui-row off2"><span>Text</span><i></i></div></div></div></section>
   </div>
-  <section class="in-small"><h3>And the rest</h3><ul><li><b>Grid coordinates</b><span>Calibrate the map once and read or jump to any grid reference.</span></li><li><b>Waypoints and timers</b><span>Numbered waypoints with grid references, and countdown timers shared with the room.</span></li><li><b>Minimap and rotation</b><span>Rotate the map to your heading and keep the full picture in the corner when zoomed in.</span></li><li><b>Export and import</b><span>Copy your marks as text and paste them into another room. Save the map as an image.</span></li><li><b>Rooms clean up</b><span>A room is deleted after 24 hours with nobody in it.</span></li><li><b>Runs anywhere</b><span>In the browser, installed as an app on a phone, or as the desktop app for macOS and Windows.</span></li></ul></section>
+  <section class="in-small"><h3>And the rest</h3><ul><li><b>Grid coordinates</b><span>Calibrate the map once and read or jump to any grid reference.</span></li><li><b>Waypoints and timers</b><span>Numbered waypoints with grid references, and countdown timers shared with the room.</span></li><li><b>Minimap and rotation</b><span>Rotate the map to your heading and keep the full picture in the corner when zoomed in.</span></li><li><b>Export and import</b><span>Copy your marks as text and paste them into another room. Save the map as an image.</span></li><li><b>Rooms clean up</b><span>A room is deleted after 24 hours with nobody in it.</span></li><li><b>Runs anywhere</b><span>In the browser on any computer, or installed as an app on your phone.</span></li></ul></section>
   <section class="in-oss">
     <div class="in-oss-in">
-      <h3>Open source, all of it.</h3>
-      <p>The website, the desktop app and the database rules are public on GitHub under the MIT license. Read the code, run your own copy or send a fix.</p>
+      <h3>Built for Artemis Defense Group.</h3>
+      <p>Artemis TAK is the planning map for Artemis operations in BRM5, with Sawang built in.</p>
       <ul>
         <li>No accounts, no cookies, no analytics.</li>
-        <li>Every desktop release is built on GitHub from the public code, with checksums and a signed build attestation.</li>
         <li>Rooms are public, so don’t put anything private in one.</li>
-        <li>Found a problem? Report it privately through GitHub.</li>
+        <li>Rooms are deleted after 24 hours with nobody in them.</li>
       </ul>
-      <p class="in-vf">Check any download yourself:</p>
-      <pre><code>gh attestation verify Artemis TAK-Setup-x.y.z.exe --repo rice-evans/RO-TAK</code></pre>
-      <div class="in-cta"><a class="in-btn" href="https://github.com/rice-evans/RO-TAK" target="_blank" rel="noopener">View the source</a><a class="in-btn alt" href="https://github.com/rice-evans/RO-TAK/blob/main/SECURITY.md" target="_blank" rel="noopener">Security policy</a></div>
+      <p class="in-vf">Based on RO-TAK by Banana (rice-evans), open source under the MIT license.</p>
+      <div class="in-cta"><a class="in-btn" href="https://github.com/rice-evans/RO-TAK" target="_blank" rel="noopener">Original project</a></div>
     </div>
   </section>
   </div>
@@ -2156,50 +2153,33 @@ function toast(msg) {
 
 const LEGAL = {
   privacy: ['Privacy policy', [
-    ['p up', 'Last updated 2 November 2026.'],
-    ['h', 'What I collect'],
-    ['p', "Browsing the site collects nothing from you, and I don't set cookies. There are no accounts. If you join a room, I store the room code, the map you upload, everything drawn on it and a one-way hash of a key that marks you as the room's host. The name you pick is shared live with the people in the room and is not kept."],
+    ['p up', 'Last updated 8 November 2026.'],
+    ['h', 'What is stored'],
+    ['p', "There are no accounts and no cookies. If you join a room, the room code, the map chosen for it, everything drawn on it and a one-way hash of a key that marks the room's host are stored. The name you pick is shared live with the people in the room and is not kept."],
     ['h', 'Rooms'],
-    ['p', "Rooms are not private. There are no accounts, and room codes can be looked up, so anyone can read a room's map and marks. Anyone with a room code can also join and edit it unless the host locks it. Uploaded maps are stored publicly, so anyone with the link to the file can open it. Don't put anything private in a room."],
-    ['p', "Pings are sent live to the people in the room and are not stored. If you lead a room, your map position is sent live the same way and is not stored."],
-    ['p', "To limit spam, creating a room stores a one-way hash of your network address for 24 hours. The address itself is not stored and the hash cannot be turned back into it."],
+    ['p', "Rooms are not private. Anyone with a room code can view it, and edit it unless the host locks it. Don't put anything private in a room. Pings and the leader's map position are sent live and not stored."],
+    ['p', 'To limit spam, creating a room stores a one-way hash of your network address for 24 hours. The address itself is not stored.'],
     ['h', 'Deletion'],
-    ['p', 'A room is deleted automatically, along with its marks and map file, once nobody has been connected to it for 24 hours. I can also delete one sooner on request.'],
-    ['h', 'Without a room'],
-    ['p', "If you don't join a room, your map and marks stay in your browser and are never sent to me."],
-    ['h', 'Checks'],
-    ['p', 'Uploaded maps are checked automatically for explicit content. The image is sent to OpenAI for this and is not kept by me. Images that fail are not stored. Text you type, such as names, labels and room codes, is checked against a word list in your browser and in my database. Text that fails is not stored.'],
-    ['h', 'Analytics'],
-    ['p', "I don't use analytics."],
+    ['p', 'A room and its marks are deleted automatically once nobody has been connected to it for 24 hours.'],
     ['h', 'Saved on your device'],
-    ['p', 'The site saves your symbol and badge sizes, your grid settings, your display name, your recent rooms, which layers you hide, whether you have seen the tutorial and the introduction, a key that marks you as the host of rooms you created and, if you work without a room, your map, marks and grid calibration. This stays in your browser. Clearing your browser data removes it. If you install the site as an app, its files are also saved on your device so it opens offline.'],
+    ['p', 'Your settings, display name, recent rooms, view choices and host keys are saved in your browser. Clearing your site data removes them.'],
     ['h', 'Other services'],
-    ['ul', ["Vercel hosts the site and keeps standard server logs, which include IP addresses. I can't view these.", 'Supabase stores rooms, maps and marks, carries the live sync between players and keeps standard server logs, which include IP addresses. I can see these.', 'OpenAI checks uploaded maps for explicit content. It only receives the image.', 'Google Fonts supplies the typeface, so Google receives your IP address and browser details when a page loads.', 'GitHub hosts the source code and the downloads. Its own privacy policy applies when you download. The desktop app also asks GitHub whether a newer version exists, and GitHub receives that request like any other download.']],
+    ['ul', ['Vercel hosts the site and keeps standard server logs, which include IP addresses.', 'Supabase stores rooms and marks, carries the live sync and keeps standard server logs, which include IP addresses.']],
     ['h', 'Contact'],
-    ['p', 'Message rice.e on Discord with any question or request about this policy, including to have a room and its map removed.'],
+    ['p', 'Contact Artemis High Command in the Artemis Defense Group Discord.'],
   ]],
   terms: ['Terms of service', [
-    ['p up', 'Last updated 2 November 2026.'],
+    ['p up', 'Last updated 8 November 2026.'],
     ['h', 'Games only'],
-    ['p', 'Artemis TAK is a map and marking tool for entertainment and roleplay in games. It is not military, navigation, safety or emergency guidance, and it is not for real operations.'],
+    ['p', 'Artemis TAK is a map and marking tool for roleplay in games. It is not military, navigation, safety or emergency guidance, and it is not for real operations.'],
     ['h', 'No guarantee'],
-    ['p', 'It is provided as is. It may be wrong, break, lose your marks or go offline without notice. Use it at your own risk. I am not liable for anything that comes from using it.'],
-    ['h', 'Use of the site'],
-    ['p', "You're free to use it. Don't try to break it, overload it or abuse rooms with scripts or spam. Creating more than 10 new rooms in a day is blocked."],
+    ['p', 'It is provided as is. It may break, lose your marks or go offline without notice. Use it at your own risk.'],
     ['h', 'Conduct'],
-    ['p', 'Slurs and inappropriate images are not tolerated. Maps are checked automatically and text is filtered. If I hear about this, the relevant users will be banned.'],
-    ['h', 'Maps and uploads'],
-    ['p', "You keep ownership of what you upload. Only upload maps and images you're allowed to use. Everyone in your room can see them. I can remove any room or file at any time."],
-    ['h', 'Room deletion'],
-    ['p', 'Rooms are deleted automatically after 24 hours with nobody connected. Everything in them is lost.'],
+    ['p', "Don't abuse rooms with spam or scripts, and keep what you write clean. Text is filtered automatically, and creating more than 10 new rooms in a day is blocked."],
     ['h', 'Ownership'],
-    ['p', 'Game names, maps and images belong to their owners. This project is not affiliated with or endorsed by Roblox or any game. Symbols are drawn with milsymbol, following MIL-STD-2525 and APP-6. The photos on the entrance page belong to the creators credited on them.'],
-    ['h', 'Downloads'],
-    ['p', 'The project is open source. The desktop app is unsigned, so your system will warn you when you open it. Before running anything you download from the internet, read the code to check it is safe. Each release publishes checksums and build attestations so you can verify the file. The Windows app updates itself from GitHub releases. The Mac app tells you when a newer version exists and you install it yourself.'],
+    ['p', 'Game names and maps belong to their owners. This project is not affiliated with or endorsed by Roblox or the makers of BRM5. Symbols are drawn with milsymbol. Based on RO-TAK by rice-evans, used under the MIT license.'],
     ['h', 'Changes'],
-    ['p', 'I may change or remove content, or these terms, at any time. The date at the top shows when they last changed.'],
-    ['h', 'Contact'],
-    ['p', 'Message rice.e on Discord.'],
+    ['p', 'These terms may change at any time. The date at the top shows when they last changed.'],
   ]],
 };
 const lg = $('llg'), lgOpen = () => !lg.hidden;
@@ -2233,14 +2213,8 @@ if (!IS_ELECTRON) { const m = location.pathname.match(/^\/(privacy|tos)\/?$/); i
 (function () {
   const L = $('landing');
   if (!L) return;
-  const IMAGES = [
-    { src: 'images/landing/1.jpg', by: 'FineMaltLyrics' },
-    { src: 'images/landing/2.jpg', by: 'begoren' },
-    { src: 'images/landing/southern.jpg', by: 'u/Southern_Bid947', url: 'https://www.reddit.com/user/Southern_Bid947/' },
-    { src: 'images/landing/aqwerd.jpg', by: 'u/aqwerd2006', url: 'https://www.reddit.com/user/aqwerd2006/' },
-    { src: 'images/landing/messey.jpg', by: 'u/Messey_Mess1', url: 'https://www.reddit.com/user/Messey_Mess1/' },
-  ];
-  [['lrow1', 0], ['lrow2', 1]].forEach(([id, shift]) => {
+  const IMAGES = [];
+  if (IMAGES.length) [['lrow1', 0], ['lrow2', 1]].forEach(([id, shift]) => {
     const t = $(id);
     let list = IMAGES.map((_, k) => IMAGES[(k + shift) % IMAGES.length]);
     while (list.length < 6) list = list.concat(list);
@@ -2252,7 +2226,7 @@ if (!IS_ELECTRON) { const m = location.pathname.match(/^\/(privacy|tos)\/?$/); i
     });
   });
   (function () {
-    const MAPS = ['images/landing/map1.webp'];
+    const MAPS = ['images/maps/sawang-landing.webp'];
     const box = L.querySelector('.mf-box'), img = L.querySelector('.mf-img');
     img.src = MAPS[Math.floor(Math.random() * MAPS.length)];
     const SYM = {};
@@ -2327,7 +2301,7 @@ if (!IS_ELECTRON) { const m = location.pathname.match(/^\/(privacy|tos)\/?$/); i
     typer = setInterval(() => { txt.textContent = MSG.slice(0, ++i); if (i >= MSG.length) { clearInterval(typer); txt.classList.remove('typing'); } }, 32);
   }
   const stopChat = () => { clearTimeout(idle); clearInterval(typer); };
-  idle = setTimeout(showChat, 45000);
+  // idle chat bubble disabled
   $('lchatX').onclick = () => { stopChat(); $('lchat').hidden = true; };
   const I = $('intro'), introOpen = () => !I.hidden;
   let introShown = false, introIO = null;
@@ -2603,11 +2577,24 @@ let roomUI = () => {};
     paintPin(); b.before(pn);
     const cs = document.createElement('button'); cs.className = 'mbtn';
     const paintCase = () => { cs.textContent = charcoal ? 'FDE case' : 'Charcoal case'; };
-    cs.onclick = () => { charcoal = !charcoal; try { localStorage.setItem('atak-case', charcoal ? 'charcoal' : ''); } catch (e) {} $('frame').src = charcoal ? 'frame-charcoal.png' : 'frame.png'; paintCase(); $('menu').classList.remove('open'); };
+    cs.onclick = () => { charcoal = !charcoal; try { localStorage.setItem('atak-case', charcoal ? 'charcoal' : ''); } catch (e) {} $('frame').src = charcoal ? 'images/frame-charcoal.png' : 'images/frame.png'; paintCase(); $('menu').classList.remove('open'); };
     paintCase(); b.before(cs);
     window.rotak.onUpdate(u => { upd = u; ub.textContent = u.state === 'ready' ? 'Restart to update to ' + u.version : 'Update to ' + u.version; ub.style.display = ''; toast('Update ' + u.version + (u.state === 'ready' ? ' ready' : ' available')); });
   }
   if (!IS_ELECTRON) {
+    let dev = false; try { dev = localStorage.getItem('atak-dev') === '1'; } catch (e) {}
+    const dv = document.createElement('button'); dv.className = 'mbtn';
+    const wc = document.createElement('button'); wc.className = 'mbtn alt';
+    const paintDev = () => {
+      document.documentElement.classList.toggle('dev', dev);
+      if (dev) $('frame').src = charcoal ? 'images/frame-charcoal.png' : 'images/frame.png';
+      dv.textContent = dev ? 'Full screen view' : 'Device view';
+      wc.style.display = dev ? '' : 'none';
+      wc.textContent = charcoal ? 'Case: Charcoal' : 'Case: FDE';
+    };
+    dv.onclick = () => { dev = !dev; try { localStorage.setItem('atak-dev', dev ? '1' : ''); } catch (e) {} paintDev(); $('menu').classList.remove('open'); setTimeout(() => { resize(); fit(); }, 50); };
+    wc.onclick = () => { charcoal = !charcoal; try { localStorage.setItem('atak-case', charcoal ? 'charcoal' : ''); } catch (e) {} paintDev(); };
+    paintDev(); b.before(dv, wc);
     const h = document.createElement('button'); h.className = 'mbtn'; h.textContent = 'Home';
     h.onclick = () => { location.href = '/'; };
     b.before(h);
@@ -3203,7 +3190,7 @@ $('case').addEventListener('mousedown', e => {
 addEventListener('mouseup', stopDrag);
 addEventListener('blur', stopDrag);
 
-if (IS_ELECTRON) $('frame').src = charcoal ? 'frame-charcoal.png' : 'frame.png';
+if (IS_ELECTRON) $('frame').src = charcoal ? 'images/frame-charcoal.png' : 'images/frame.png';
 new ResizeObserver(() => document.documentElement.style.setProperty('--tb', $('toolbar').offsetHeight + 'px')).observe($('toolbar'));
 if (!IS_ELECTRON && 'serviceWorker' in navigator && /^https?:/.test(location.protocol)) navigator.serviceWorker.register('sw.js').catch(() => {});
 paintColor(); paintSize(); setTool('pen');
