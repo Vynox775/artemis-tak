@@ -562,6 +562,27 @@ try { if (document.documentElement.className === 'web' && !navigator.standalone 
   #legend .lgh { color: #9aa1aa; font: 11px "Share Tech Mono", ui-monospace, monospace; letter-spacing: .1em; text-transform: uppercase; }
   #legend .lgfr { grid-template-columns: 96px repeat(4, 1fr); gap: 3px 4px; padding-bottom: 8px; margin-bottom: 4px; border-bottom: 1px solid #2a2d33; }
   #legend .lgfr > span:not(.lgh) { font-size: 12px; color: #e8eaed; }
+
+  /* Symbol chooser list: smaller icons, clearer names */
+  #sympanel .sb-row { min-height: 28px; gap: 10px; padding: 2px 10px; font-size: 12.5px; color: #e8eaed; line-height: 1.25; }
+  #sympanel .sb-row:nth-child(even) { background: rgba(255,255,255,.03); }
+  #sympanel .sb-row:hover { background: #22252b; }
+  #sympanel .sb-row.on { background: #B5121B; color: #fff; }
+  #sympanel .sb-list { border-radius: 3px; background: #0d0e10; border: 1px solid #23262c; }
+  #sympanel .sb-f span { color: #9aa1aa; font: 11px "Share Tech Mono", ui-monospace, monospace; letter-spacing: .08em; text-transform: uppercase; }
+  #sympanel select, #sympanel input[type=text], #sympanel input[type=search] { border-radius: 2px; background: #1a1c20; }
+
+  /* Symbol builder popup: tidy header */
+  #sympanel { padding: 10px 12px 12px; }
+  #sympanel .sb-head { top: -10px; background: rgba(7,8,9,.98); gap: 12px; padding: 6px 0 10px; margin-bottom: 2px; border-bottom: 1px solid #23262c; }
+  #sympanel .sb-head canvas { flex: none; background: #0d0e10; border: 1px solid #23262c; border-radius: 2px; }
+  #sympanel .sb-code { display: flex; flex-direction: column; gap: 2px; min-width: 0; font: inherit; color: #e8eaed; }
+  #sympanel .sb-code b { font: 700 16px Rajdhani, "IBM Plex Sans", sans-serif; letter-spacing: .06em; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  #sympanel .sb-code small { color: #e0202b; font: 11px "Share Tech Mono", ui-monospace, monospace; letter-spacing: .12em; text-transform: uppercase; }
+  #sympanel .sb-code code { color: #5d636c; font: 10px "Share Tech Mono", ui-monospace, monospace; letter-spacing: .06em; }
+  #sympanel .sb-grid { gap: 8px 10px; }
+  #sympanel select, #sympanel input[type=text], #sympanel input[type=search] { height: 30px; border: 1px solid #23262c; color: #e8eaed; }
+  #sympanel select:focus, #sympanel input:focus { border-color: #B5121B; }
 </style>
 </head>
 <body>
@@ -719,8 +740,11 @@ let img = null, name = 'Artemis TAK';
 let items = [], hist = [];
 let v = { x: 0, y: 0, s: 1, r: 0 };
 let cur = null, pan = null, erasing = false, tp = null, dpr = 1;
-const setg = { sym: 56, badge: 16, hideNums: false, showGrid: true };
-try { const o = JSON.parse(localStorage.getItem('atak-set') || '{}'); if (o.sym > 0) setg.sym = o.sym; if (o.badge > 0) setg.badge = o.badge; setg.hideNums = !!o.hideNums; setg.showGrid = o.showGrid !== false; } catch (e) {}
+// Object sizes are a scale: 1 = normal size
+const SYM_BASE = 56, BADGE_BASE = 16;
+const r1s = n => Math.max(0.1, Math.round(n * 10) / 10);
+const setg = { sym: 1, badge: 1, hideNums: false, showGrid: true };
+try { const o = JSON.parse(localStorage.getItem('atak-set') || '{}'); if (o.sym > 0) setg.sym = o.sym > 5 ? r1s(o.sym / SYM_BASE) : o.sym; if (o.badge > 0) setg.badge = o.badge > 5 ? r1s(o.badge / BADGE_BASE) : o.badge; setg.hideNums = !!o.hideNums; setg.showGrid = o.showGrid !== false; } catch (e) {}
 const LAYERS = [['sym', 'Symbols'], ['draw', 'Drawings'], ['text', 'Text'], ['num', 'Numbers'], ['wp', 'Waypoints']];
 const LAYER_OF = { sym: 'sym', pen: 'draw', line: 'draw', arrow: 'draw', fire: 'draw', box: 'draw', text: 'text', num: 'num', wp: 'wp' };
 const hidL = new Set();
@@ -733,7 +757,7 @@ function toggleLayer(k) {
   try { localStorage.setItem('atak-layers', JSON.stringify([...hidL])); } catch (e) {}
   draw(); paintSide(true);
 }
-const SET_RANGE = { sym: [1, 300], badge: [0.5, 120] };
+const SET_RANGE = { sym: [0.1, 5], badge: [0.1, 5] };
 const r1 = n => Math.round(n * 10) / 10;
 let nextNum = 1, numPre = '', lastNumCount = 0;
 const TAU = Math.PI * 2;
@@ -802,8 +826,8 @@ function drawThumb(x, it, w, h) {
   x.drawImage(r.cv, (w - r.w * k) / 2, (h - r.h * k) / 2, r.w * k, r.h * k);
 }
 const unit = () => img ? Math.max(img.width, img.height) / 500 : 1;
-const symS = () => setg.sym * unit();
-const badgeD = () => setg.badge * unit();
+const symS = () => setg.sym * SYM_BASE * unit();
+const badgeD = () => setg.badge * BADGE_BASE * unit();
 const symR = () => symS() * 0.6;
 const UPRIGHT = it => it.type === 'sym' || it.type === 'text' || it.type === 'num' || it.type === 'wp';
 function badgeFont(c, d, n) {
@@ -921,7 +945,10 @@ function sbPreview() {
   const cv = E.prev, x = cv.getContext('2d'), r = window.devicePixelRatio || 1;
   x.setTransform(r, 0, 0, r, 0, 0); x.clearRect(0, 0, cv.width, cv.height);
   drawThumb(x, it, cv.width / r, cv.height / r);
-  E.code.textContent = it.sidc;
+  const nm = (sbData().i.find(e => e[0] === SB.icon) || [])[1] || 'Symbol';
+  const aff = (SI.find(e => e[0] === SB.si) || [])[1] || '';
+  E.code.innerHTML = '';
+  E.code.append(mkEl('b', '', nm), mkEl('small', '', aff), mkEl('code', '', it.sidc));
 }
 function sbIcons() {
   const q = E.q.value.trim().toLowerCase(), list = sbData().i.filter(e => !q || e[1].toLowerCase().includes(q) || e[0].includes(q)).slice(0, 150);
@@ -930,7 +957,7 @@ function sbIcons() {
   E.io = new IntersectionObserver(es => es.forEach(en => {
     if (!en.isIntersecting) return;
     const d = en.target; E.io.unobserve(d);
-    d.prepend(thumb(34, 30, (x, w, h) => drawThumb(x, { sidc: sidc20(SB.si, SB.set, { icon: d.dataset.c, ctx: SB.ctx }), std: SB.std }, w, h)));
+    d.prepend(thumb(26, 22, (x, w, h) => drawThumb(x, { sidc: sidc20(SB.si, SB.set, { icon: d.dataset.c, ctx: SB.ctx }), std: SB.std }, w, h)));
   }), { root: E.list });
   list.forEach(([c, n]) => {
     const d = mkEl('div', 'sb-row' + (c === SB.icon ? ' on' : ''));
@@ -964,7 +991,7 @@ function sbBuild() {
   const setOpts = () => Object.keys(SD[SB.std] || {}).map(k => [k, SD[SB.std][k].n]);
   const on = k => v => { SB[k] = v; sbDirty(); };
   const head = mkEl('div', 'sb-head');
-  E.prev = document.createElement('canvas'); E.prev.width = 150 * (window.devicePixelRatio || 1); E.prev.height = 96 * (window.devicePixelRatio || 1); E.prev.style.width = '150px'; E.prev.style.height = '96px';
+  E.prev = document.createElement('canvas'); E.prev.width = 84 * (window.devicePixelRatio || 1); E.prev.height = 56 * (window.devicePixelRatio || 1); E.prev.style.width = '84px'; E.prev.style.height = '56px';
   head.appendChild(E.prev); E.code = mkEl('div', 'sb-code'); head.appendChild(E.code);
   sp.appendChild(head);
   const g = mkEl('div', 'sb-grid'); sp.appendChild(g);
@@ -1848,15 +1875,15 @@ function buildSettings() {
   const h = document.createElement('div'); h.className = 's h'; h.className = 'sh'; h.textContent = 'Settings (this device only)'; box.appendChild(h);
   const row = (label, key) => {
     const l = document.createElement('span'); l.textContent = label;
-    const rg = document.createElement('input'); rg.type = 'range'; rg.min = SET_RANGE[key][0]; rg.max = SET_RANGE[key][1]; rg.step = 0.5;
+    const rg = document.createElement('input'); rg.type = 'range'; rg.min = SET_RANGE[key][0]; rg.max = SET_RANGE[key][1]; rg.step = 0.1;
     const nm = document.createElement('input'); nm.type = 'number'; nm.step = 'any'; nm.min = SET_RANGE[key][0]; nm.max = SET_RANGE[key][1];
     rg.oninput = () => setSetting(key, parseFloat(rg.value));
     nm.onchange = () => setSetting(key, parseFloat(nm.value));
     nm.onkeydown = e => { e.stopPropagation(); if (e.key === 'Enter') nm.blur(); };
     box.append(l, rg, nm); SETROWS[key] = [rg, nm];
   };
-  row('Symbol size (all symbols)', 'sym');
-  row('Number badge size', 'badge');
+  row('Symbol scale (all symbols)', 'sym');
+  row('Number badge scale', 'badge');
   const l = document.createElement('span'); l.textContent = 'Map rotation (°)';
   const rg = document.createElement('input'); rg.type = 'range'; rg.min = -180; rg.max = 180; rg.step = 1; rg.id = 'rotRg';
   const nm = document.createElement('input'); nm.type = 'number'; nm.min = -180; nm.max = 180; nm.id = 'rotIn';
@@ -1957,7 +1984,7 @@ function setImg(src, opt = {}) {
     if (opt.solo && room) return;
     img = i;
     if (opt.reset) { items = []; hist = []; }
-    if (opt.fit) { fit(); startZoom(); }
+    if (opt.fit) fit();
     if (opt.reset && !room) save();
     setTitle();
     draw();
